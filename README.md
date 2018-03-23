@@ -1,15 +1,28 @@
+# Photo Shares Screen Shot
 
 <img src="ScreenShot.png"/>
 
-#Installation
+# Features
 
-##Getting the files
+- Register and Login
+- Photo Upload and Delete
+- Album Create and Delete
+- Like Button
+- Give Photo Tags
+- Search For Photos or Tags
+- Comment Photo
+- Top 10 likes, Top 10 Tags, Top 10 Commented
+- And more ...
+
+# Installation
+
+## Getting the files
 ```
 git clone https://github.com/TonyStarkLi/Photoshare-Website-With-Flask-And-MySql.git
 cd Photoshare-Website-With-Flask-And-MySql/
 ```
 
-##Database setup: (for ubuntu)
+## Database setup: (for ubuntu)
 First install MySQL with the following:
 ```
 sudo apt-get update
@@ -27,7 +40,7 @@ source ./schema.sql
 ```
 Now quit MySQL (enter CTRL-D or \q)
 
-##Application Setup:
+## Application Setup:
 ```
 virtualenv photoenv
 source photoenv/bin/activate #use photoenv/Scripts/activate on windows
