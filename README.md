@@ -2,8 +2,8 @@
 
 ##Getting the files
 ```
-git clone https://github.com/benlawson/Photoshare-Skeleton.git
-cd Photoshare-Skeleton/
+git clone https://github.com/TonyStarkLi/Photoshare-Website-With-Flask-And-MySql.git
+cd Photoshare-Website-With-Flask-And-MySql/
 ```
 
 ##Database setup: (for ubuntu)
