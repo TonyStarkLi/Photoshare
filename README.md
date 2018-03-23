@@ -1,3 +1,6 @@
+
+<img src="ScreenShot.png"/>
+
 #Installation
 
 ##Getting the files
