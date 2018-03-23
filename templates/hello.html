@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+<title>Photo Share</title>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- set CSS-->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--Let browser know website is optimized for mobile-->
+
+
+
+
+
+<!-- search bar-->
+<style>
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 6px 20px 6px 12px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 50%;
+}
+</style>
+
+
+<!-- navBar drop down css -->
+<style>
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+</style>
+
+<style>
+    .button {
+        background-color: white; /* Green */
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+    .button4 {
+        background-color: white;
+        color: black;
+        border: 0px;
+    }
+    .button4:hover {background-color: #e7e7e7;}
+
+    .button5 {
+        background-color: white;
+        color: black;
+        border: 2px solid #555555;
+        border-radius: 8px;
+    }
+    .button5:hover {
+        background-color: #555555;
+        color: white;
+    }
+
+</style>
+
+
+<style>
+    body,h1 {
+        font-family: "Raleway", Arial, sans-serif;
+    }
+    h1 {letter-spacing: 6px}
+    .w3-row-padding img {
+        margin-bottom: 12px;
+    }
+    .w3-content {
+        width: 1000px;
+        /*text-align: center;*/
+        margin: 0px auto;
+    }
+</style>
+
+<style>
+    body,h1 {font-family: "Montserrat", sans-serif}
+    img {margin-bottom: -7px}
+    .w3-row-padding img {margin-bottom: 12px}
+</style>
+
+<style>
+    .container {
+        position: relative;
+        width: 100%;
+    }
+
+    .image {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #008CBA;
+    }
+
+    .container:hover .overlay {
+        opacity: 1;
+    }
+
+    .text {
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+</style>
+
+<body>
+
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card-2">
+        <a class="w3-bar-item"><b>TONY</b> PHOTO SHARE</a>
+
+        <!-- Float links to the right. Hide them on small screens -->
+
+        <!-- button 3: You-->
+        <a>
+            <div class="w3-right w3-hide-small w3-dropdown-hover">
+                <button class="w3-button">You</button>
+                <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
+
+                    {% if is_logged_in %}
+                    <a href="/profile" class="w3-bar-item w3-button">Profile</a>
+                    <a href="/logout" class="w3-bar-item w3-button">Logout</a>
+                    {% else %}
+                    <a href="/register" class="w3-bar-item w3-button">Register</a>
+                    <a href="/login" class="w3-bar-item w3-button">Login</a>
+                    {% endif %}
+
+                    <a href="/upload" class="w3-bar-item w3-button">Upload</a>
+
+                    <a href="/friends" class="w3-bar-item w3-button">Friends</a>
+
+                    <a href="/album" class="w3-bar-item w3-button">Album</a>
+
+                    <a href="/likes" class="w3-bar-item w3-button">MyLikes</a>
+
+                    <a href="/recommendations" class="w3-bar-item w3-button">Recommendations</a>
+
+
+                </div>
+            </div>
+        </a>
+        <!-- button 2: Explore-->
+        <a>
+            <div class="w3-right w3-hide-small w3-dropdown-hover">
+                <button class="w3-button">Explore</button>
+                <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
+
+                    <a href="/top10_liked" class="w3-bar-item w3-button">Top10-Liked</a>
+
+                    <a href="/explore/top10_commented" class="w3-bar-item w3-button">Top10-Commented</a>
+
+                    <a href="/explore/top10_contributions" class="w3-bar-item w3-button">Top10-Contributions</a>
+
+                    <a href="/explore/top10_tags" class="w3-bar-item w3-button">Top10-Tags</a>
+
+                </div>
+            </div>
+        </a>
+
+
+        <!-- button 1: Home-->
+        <a href="/" class="w3-bar-item w3-button w3-right">Home</a>
+
+        <!-- search bar -->
+        <form method="post" enctype="multipart/form-data" action="/search">
+        <input type="text" name="search" placeholder="Search...         Using space to separate tags">
+        </form>
+
+    </div>
+</div>
+
+
+<!-- !PAGE CONTENT! -->
+< Ja class="w3-content" style="max-width:1500px">
+
+    <!-- Header -->
+    <header class="w3-panel w3-center" style="padding:128px 16px">
+        <h1 class="w3-xlarge">PHOTO SHARE</h1>
+        {% if is_unauth %}
+        <h1> Yikes, looks like you need to <a href='/login'>login</a></h1>
+        <h1> or <a href='/register'>make an account</a></h1>
+        {% else %}
+
+        <!-- Name -->
+        {% if name %}
+        <h2>Welcome {{name[0]}} {{name[1]}}</h2>
+        {% endif %}
+
+        <!-- Message -->
+        {% if message %}
+        <h4>{{message}}</h4>
+        {% endif %}
+
+
+        <!-- top10 contributions-->
+        {% if contributions%}
+        <table class="w3-card w3-table w3-bordered">
+
+            <tr>
+                <th>Contributions</th>
+                <th>First Nae</th>
+                <th>Last Name</th>
+                <th>Emial</th>
+
+            </tr>
+            {% for contribution in contributions %}
+            <tr>
+                <td>{{contribution[3]}}</td>
+                <td>{{contribution[1]}}</td>
+                <td>{{contribution[2]}}</td>
+                <td>{{contribution[0]}}</td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+        {% endif %}
+
+        {% if toptags %}
+                    <div class="w3-card-2 w3-margin">
+                <div class="w3-container w3-padding">
+                    <h4>Tags</h4>
+                </div>
+                <div class="w3-container w3-white">
+                    <form method="post" enctype="multipart/form-data" action="/explore/view_by_tags">
+                    <p>
+                        {% for t in toptags %}
+                        <button name='tag_info' value={{t[0]}} class="w3-tag w3-large w3-margin-bottom button button5">{{t[0]}}</button>
+                        {% endfor %}
+                    </p>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- photo_detail -->
+        {% if photo_detail %}
+        <div class="w3-content" style="max-width:1100px;margin-top:80px;margin-bottom:80px">
+
+            <div class="w3-card-2 w3-margin">
+                <div class="w3-container w3-padding">
+                    {% if photo_detail_info %}
+                    <div class="w3-left">
+                        <h1><b>{{photo_detail_info[1]}}</b></h1>
+                        <p class="w3-left">By {{photo_detail_info[2]}} {{photo_detail_info[3]}}</p>
+                    </div>
+                </div>
+                <img src="data:image/png;base64, {{photo_detail_info[0].decode('utf8')}}" style="width:100%;">
+
+            </div>
+            {% endif %}
+
+
+            <div class="w3-card-2 w3-margin">
+                <div class="w3-container w3-padding">
+                    <h4>Tags</h4>
+                </div>
+                <div class="w3-container w3-white">
+                    {% if photo_detail_tags %}
+
+                    <form method="post" enctype="multipart/form-data" action="/explore/view_by_tags">
+                    <p>
+                        {% for tag in photo_detail_tags %}
+                        <button name='tag_info' value={{tag[0]}} class="w3-tag w3-large w3-margin-bottom button button5">{{tag[0]}}</button>
+                        {% endfor %}
+                    </p>
+                    </form>
+
+                    {% endif %}
+                </div>
+            </div>
+
+
+        <form method="post" enctype="multipart/form-data" action="/photo_detail">
+            {% if photo_id %}
+            <div class="w3-card-2 w3-margin">
+                <div class="w3-container w3-padding">
+                    <h4>Post a comment!</h4>
+                    <input class="w3-border w3-padding" type="text" name="comment" required="true">
+                    <button type="submit" name="photo_id" value={{photo_id}} class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+                </div>
+            </div>
+            {% endif %}
+        </form>
+
+
+            {% if photo_detail_comments %}
+            <div class="w3-card-2 w3-margin">
+                <div class="w3-container w3-padding">
+                    <h4>Comments</h4>
+
+                    {% for comment in photo_detail_comments %}
+
+                    <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
+                        <span class="w3-right w3-opacity">{{comment[1]}}</span>
+                        <h4>{{comment[2]}} {{comment[3]}}</h4><br>
+                        <hr class="w3-clear">
+                        <p class="w3-left">{{comment[0]}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+
+
+
+
+
+        </div>
+        {% endif %}
+
+
+        <!-- Upload -->
+        {% if upload %}
+        <form method="post" enctype="multipart/form-data" action="/upload">
+
+            <p>
+            <div class="w3-card-4">
+                <h3><label for="photo">Select photo:</label></h3>
+                <input class="w3-center" type="file" name="photo" required='true' /><br />
+            </div>
+            </p>
+
+            <p>
+            <div class="w3-card-4">
+                <h3><label for="caption">Please caption:</label></h3>
+                <input class="w3-border" type="text" name="caption" required='true' /><br />
+            </div>
+            </p>
+
+
+
+
+            {% if albums_info %}
+            <div class="w3-card-4">
+
+                <h3>Choose your album:</h3>
+                <select class="w3-select w3-border" name="album_id" required="true">
+                    <option value="" disabled selected>Options</option>
+                    {% for one_album in albums_info %}
+                    <option value="{{one_album[3]}}">
+                        {{one_album[0]}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+
+
+
+
+
+            <p>
+            <div class="w3-card-4">
+                <table id="myTable">
+                </table>
+                <br>
+                <button onclick="myCreateFunction()">Create row</button>
+                <button onclick="myDeleteFunction()">Delete row</button>
+            </div>
+            </p>
+
+
+
+
+
+            <p>
+                {% if albums_info == () %}
+                <button class="w3-button w3-light-grey w3-padding-large" type="submit" disabled>
+                    <i class="fa fa-upload"></i> UPLOAD!
+                </button>
+                {% else %}
+                <button class="w3-button w3-light-grey w3-padding-large" type="submit">
+                    <i class="fa fa-upload"></i> UPLOAD!
+                </button>
+                {% endif %}
+            </p>
+
+
+        </form>
+        {% endif %}
+
+        {% if is_album %}
+        <form method="post" enctype="multipart/form-data" action="/album">
+            <label for="photo">Select photo:</label>
+            <input type="file" name="photo" required='true' /><br />
+            <label for="Title">Please title:</label>
+            <input class="w3-border" type="text" name="title" required='true' /><br />
+            <p>
+                <button class="w3-button w3-light-grey w3-padding-large" type="submit">
+                    <i class="fa fa-upload"></i> Create Album!
+                </button>
+            </p>
+        </form>
+        {% endif %}
+
+        <!-- friends list -->
+
+        {% if myfriends %}
+        <h3 class="w3-padding-24">My Friends</h3>
+
+        <table class="w3-card w3-table w3-bordered">
+
+            <tr>
+                <th>First Nae</th>
+                <th>Last Name</th>
+                <th>Emial</th>
+            </tr>
+            {% for friend in myfriends %}
+            <tr>
+                <td>{{friend[1]}}</td>
+                <td>{{friend[2]}}</td>
+                <td>{{friend[0]}}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        {% elif myfriends == () %}
+        <h5>It seems like you don't have any friends right now</h5>
+        {% endif %}
+
+
+        {% if nonfriends %}
+        <h3 class="w3-padding-24">More Friends</h3>
+        <form method="post" enctype="multipart/form-data" action="/friends">
+            <table class="w3-card w3-table w3-bordered">
+
+                <tr>
+                    <th>First Nae</th>
+                    <th>Last Name</th>
+                    <th>Emial</th>
+                    <th style="width=10%">Add</th>
+                </tr>
+                {% for friend in nonfriends %}
+                <tr>
+                    <td>{{friend[1]}}</td>
+                    <td>{{friend[2]}}</td>
+                    <td>{{friend[0]}}</td>
+                    <td>
+                        <button class="button button4" type="submit" name="friend_email" value={{friend[0]}} >
+                            <i class="fa fa-address-card-o"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+            {% endif %}
+        </form>
+
+    </header>
+
+
+    {% if albums %}
+    <form method="post" enctype="multipart/form-data" action="/album">
+        <div class="w3-row" style="margin-bottom:128px">
+
+            <div class="w3-row-padding w3-padding-16">
+
+                {% for album in albums %}
+
+                <div class="w3-quarter">
+                    <div class="w3-card-4 w3-margin-bottom">
+
+                        <button class="button button4" type="submit" name="detail" value={{album[3]}}>
+                            <img src="data:image/png;base64, {{album[2].decode('utf8')}}" class="image" style="width:100%;">
+                        </button>
+                        </form>
+
+
+                        <div class="w3-container w3-white w3-center">
+                            <p>{{album[0]}}</p>
+                            <form class="w3-right" method="post" enctype="multipart/form-data" action="/delete_album">
+                        <button class="w3-button w3-left" type="submit" name="album_id" value={{album[3]}}><i class="fa fa-remove" style="font-size:24px"></i></button>
+                    </form>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+
+
+        </div>
+
+    {% endif %}
+
+
+
+
+    {% if photos %}
+
+
+
+    <!--<div class="w3-card-4 w3-dark-grey">-->
+
+<!--<div class="w3-container w3-center">-->
+  <!--<h3>Friend request</h3>-->
+  <!--<img src="img_avatar3.png" alt="Avatar" style="width:80%">-->
+  <!--<h5>John Doe</h5>-->
+
+  <!--<button class="w3-button w3-green">Accept</button>-->
+  <!--<button class="w3-button w3-red">Decline</button>-->
+<!--</div>-->
+
+<!--</div>-->
+
+
+        <div class="w3-row-padding" style="margin-bottom:128px">
+            {% for photo in photos %}
+
+<!------------------------------------------------------------------>
+            <div class="w3-third w3-ripple">
+                <div class="w3-card-4">
+                <div class="w3-container w3-center">
+
+                    {% if loop.index % 3 == 0 %}
+                    <form method="post" enctype="multipart/form-data" action="/photo_detail">
+                    <button class="button button4" type="submit" name="photo_id" value={{photo[1]}}>
+                    <img src="data:image/png;base64, {{photo[0].decode('utf8')}}" alt="Avatar" class="image">
+                        </button>
+                    </form>
+                    <h5>{{photo[2]}}</h5>
+                    <hr>
+
+                    <form method="post" enctype="multipart/form-data" action="/likes">
+                        <button class="w3-button w3-right" type="submit" name="photo_id" value={{photo[1]}}><i class="fa fa-heart-o" style="font-size:24px"></i></button>
+                    </form>
+                    <form method="post" enctype="multipart/form-data" action="/delete_photo">
+                        <button class="w3-button w3-left" type="submit" name="photo_id" value={{photo[1]}}><i class="fa fa-remove" style="font-size:24px"></i></button>
+                    </form>
+
+                    {% endif %}
+
+                </div>
+                </div>
+            </div>
+<!------------------------------------------------------------------>
+
+            <div class="w3-third w3-ripple">
+                <div class="w3-card-4">
+                <div class="w3-container w3-center">
+
+                    {% if loop.index % 3 == 1 %}
+                    <form method="post" enctype="multipart/form-data" action="/photo_detail">
+                    <button class="button button4" type="submit" name="photo_id" value={{photo[1]}}>
+                    <img src="data:image/png;base64, {{photo[0].decode('utf8')}}" alt="Avatar" class="image">
+                        </button>
+                    </form>
+                    <h5>{{photo[2]}}</h5>
+                    <hr>
+
+                    <form method="post" enctype="multipart/form-data" action="/likes">
+                        <button class="w3-button w3-right" type="submit" name="photo_id" value={{photo[1]}}><i class="fa fa-heart-o" style="font-size:24px"></i></button>
+                    </form>
+                    <form method="post" enctype="multipart/form-data" action="/delete_photo">
+                        <button class="w3-button w3-left" type="submit" name="photo_id" value={{photo[1]}}><i class="fa fa-remove" style="font-size:24px"></i></button>
+                    </form>
+
+                    {% endif %}
+
+                </div>
+                </div>
+            </div>
+
+
+            <div class="w3-third w3-ripple">
+                <div class="w3-card-4">
+                <div class="w3-container w3-center">
+
+                    {% if loop.index % 3 == 2 %}
+                    <form method="post" enctype="multipart/form-data" action="/photo_detail">
+                    <button class="button button4" type="submit" name="photo_id" value={{photo[1]}}>
+                    <img src="data:image/png;base64, {{photo[0].decode('utf8')}}" alt="Avatar" class="image">
+                        </button>
+                    </form>
+                    <h5>{{photo[2]}}</h5>
+                    <hr>
+
+                    <form method="post" enctype="multipart/form-data" action="/likes">
+                        <button class="w3-button w3-right" type="submit" name="photo_id" value={{photo[1]}}><i class="fa fa-heart-o" style="font-size:24px"></i></button>
+                    </form>
+                    <form method="post" enctype="multipart/form-data" action="/delete_photo">
+                        <button class="w3-button w3-left" type="submit" name="photo_id" value={{photo[1]}}><i class="fa fa-remove" style="font-size:24px"></i></button>
+                    </form>
+
+                    {% endif %}
+
+                </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+        </div>
+
+    {% endif %}
+    {% endif %}
+
+    <!-- End Page Content -->
+</div>
+
+<script>
+    var count = 1;
+
+function myCreateFunction() {
+    var table = document.getElementById("myTable");
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+
+    cell1.innerHTML = "<input class='w3-border' type='text' name=" +count+ " required='true' /><br />";
+    count ++;
+}
+
+function myDeleteFunction() {
+    document.getElementById("myTable").deleteRow(0);
+}
+</script>
+
+<script>
+function openCity(evt, cityName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-border-red";
+}
+</script>
+
+
+</body>
+</html>
+
